@@ -3,6 +3,10 @@
 # codigofacilito-dataviz-efectiva
 Materiales para la clase "Visualización de Datos Efectiva con Altair"
 
+***
+#### Notas sobre el gráfico final se encuentran en [tacosdedatos.github.io/codigofacilito-dataviz-efectiva](https://tacosdedatos.github.io/codigofacilito-dataviz-efectiva/)
+***
+
 ## Recursos
 * Galería de Altair: [altair-viz.github.io/gallery](https://altair-viz.github.io/gallery)
 * Creación de datos sínteticos: 
