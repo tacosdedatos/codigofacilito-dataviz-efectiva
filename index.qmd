@@ -1,0 +1,368 @@
+---
+title: "Gráficos Avanzados con Altair"
+format:
+  html:
+    code-fold: true
+    css: css/altair.css
+    code-line-numbers: true
+    code-copy: true
+    code-summary: "Código"
+jupyter: python3
+self-contained: true
+execute: 
+  error: false
+  warning: false
+---
+
+# Clase 3 - Gráficos Avanzados
+
+En la tercera y última clase vimos como crear el siguiente gráfico
+
+```{python}
+#| echo: false
+#| error: false
+#| warning: false
+
+import altair as alt
+from vega_datasets import data as vega_data
+
+data = vega_data.gapminder()
+
+slider = alt.binding_range(min=1955, max=2005, step=5)
+select_year = alt.selection_single(
+    name="year", fields=["year"], bind=slider, init={"year": 1955}
+)
+
+base = (
+    alt.Chart(data)
+    .encode(
+        color=alt.Color("cluster", type="nominal"),
+    )
+    .add_selection(select_year)
+    .transform_filter(select_year)
+)
+
+points = base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad"),
+    y=alt.Y("life_expect", title="Esperanza de vida"),
+    size="pop",
+)
+
+top = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("fertility", title="", scale=alt.Scale(domain=(0, 8))),
+        y=alt.Y("count()", title=""),
+    )
+    .properties(height=60)
+)
+
+right = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("count()", title=""),
+        y=alt.Y("life_expect", title=""),
+    )
+    .properties(width=60)
+)
+
+abajo = alt.hconcat(points, right).resolve_scale(y="shared")
+final = alt.vconcat(top, abajo)
+
+final
+```
+
+```{python}
+#| code-summary: "Importando bibliotecas"
+
+import altair as alt
+from vega_datasets import data as vega_data
+
+data = vega_data.gapminder()
+```
+
+Así se ven nuestros datos
+```{python}
+#| code-summary: "Mostrando las primeras 10 líneas de código"
+data.head(10)
+```
+
+# Mejorando nuestro gráfico
+
+En la clase terminamos con este código pero podemos mejorarlo un poco mas
+```{python}
+#| code-fold: show
+slider = alt.binding_range(min=1955, max=2005, step=5)
+select_year = alt.selection_single(
+    name="year", fields=["year"], bind=slider, init={"year": 1955}
+)
+
+base = (
+    alt.Chart(data)
+    .encode(
+        color=alt.Color("cluster", type="nominal"),
+    )
+    .add_selection(select_year)
+    .transform_filter(select_year)
+)
+
+points = base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad"),
+    y=alt.Y("life_expect", title="Esperanza de vida"),
+    size="pop",
+)
+
+top = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("fertility", title="", scale=alt.Scale(domain=(0, 8))),
+        y=alt.Y("count()", title=""),
+    )
+    .properties(height=60)
+)
+
+right = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("count()", title=""),
+        y=alt.Y("life_expect", title=""),
+    )
+    .properties(width=60)
+)
+
+abajo = alt.hconcat(points, right).resolve_scale(y="shared")
+final = alt.vconcat(top, abajo)
+
+final
+```
+
+## El gráfico final
+Nuestro gráfico final se ve así
+```{python}
+#| echo: false
+slider = alt.binding_range(min=1955, max=2005, step=5)
+select_year = alt.selection_single(
+    name="year", fields=["year"], bind=slider, init={"year": 1955}
+)
+
+base = (
+    alt.Chart(data)
+    .encode(
+        color=alt.Color("cluster", type="nominal"),
+    )
+    .add_selection(select_year)
+    .transform_filter(select_year)
+)
+
+points = base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad", scale=alt.Scale(domain=(0, 9))),
+    y=alt.Y("life_expect", title=""),
+    size=alt.Size("pop", title="población", scale=alt.Scale(range=(50, 1500))),
+)
+
+top = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("fertility", title="", bin=alt.Bin(extent=(0, 9))),
+        y=alt.Y(
+            "count()",
+            title="",
+            scale=alt.Scale(domain=(0, 30)),
+        ),
+    )
+    .properties(height=60)
+)
+
+right = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("count()", title="", scale=alt.Scale(domain=(0, 40))),
+        y=alt.Y("life_expect", title="", bin=alt.Bin(extent=(0, 90))),
+    )
+    .properties(width=60)
+)
+
+abajo = alt.hconcat(points, right).resolve_scale(y="shared")
+final = alt.vconcat(top, abajo)
+
+final.properties(title="Esperanza de vida a través de los años")
+```
+
+Nuestros ejes en los tres gráficos se mantienen sincronizados y nos permite más facilmente entender los cambios entre los años en relación los unos con los otros.
+
+También verás que los histogramas que hemos creado en el primer gráfico no están contando nuestros datos correctamente. Esto es porque aunque hemos utilizado la función `count()` para uno de nuestros componentes X o Y, no hemos 'agrupado' los otros datos 'correctamente'. Por ejemplo, en este histograma (que hemos llamado `top`):
+
+
+::: {.panel-tabset}
+
+#### Original
+
+```{python}
+#| code-fold: show
+base.mark_bar(opacity=0.3
+    ).encode(
+        x=alt.X("fertility", title="", scale=alt.Scale(domain=(0, 8))),
+        y=alt.Y("count()", title=""),
+    ).properties(height=60)
+```
+
+#### Agrupado correctamente
+Para crear histogramas tenemos que _agrupar_ nuestros datos en "cubetas" (o _bins_ en inglés). Esto es tan simple como agregar el parametro `bin = True` a nuestro componente `alt.X()`
+
+```{python}
+#| code-fold: show
+base.mark_bar(opacity=0.3
+    ).encode(
+        x=alt.X("fertility", title="", scale=alt.Scale(domain=(0, 9)), bin = True),
+        y=alt.Y("count()", title=""),
+    ).properties(height=60)
+```
+
+#### Utilizando `alt.Bin()`
+En nuestro código final utilizamos el parametro `extent` en el componente `Bin` para controlar la extensión de nuestro eje. Aunque puedes ver que utilizando el parametro `scale = alt.Scale(domain = (0, 9))` en nuestro componente X funciona, **es recomendado utilizar** `bin = alt.Bin(extent = (0, 9))`
+
+```{python}
+#| code-fold: show
+base.mark_bar(opacity=0.3
+    ).encode(
+        x=alt.X("fertility", title="", bin = alt.Bin(extent = (0, 9))),
+        y=alt.Y("count()", title=""),
+    ).properties(height=60)
+```
+
+#### Para `alt.Y()` si usamos `alt.Scale()`
+
+Para controlar la extensión de nuestro eje Y, ya que no estamos utilizando `Bin` ahí, si vamos a utilizar `scale = alt.Scale(domain = (0, 30))`.
+
+```{python}
+#| code-fold: show
+base.mark_bar(opacity=0.3
+    ).encode(
+        x=alt.X("fertility", title="", bin = alt.Bin(extent = (0, 9))),
+        y=alt.Y("count()", title="", scale = alt.Scale(domain = (0, 30))),
+    ).properties(height=60)
+```
+
+:::
+
+Lo mismo hacemos con nuestro gráfico a la derecha:
+```{python}
+#| code-fold: show 
+base.mark_bar(opacity=0.3
+    ).encode(
+        x=alt.X("count()", title="", scale=alt.Scale(domain=(0, 40))),
+        y=alt.Y("life_expect", title="", bin=alt.Bin(extent=(0, 90))),
+    ).properties(width=60)
+```
+
+
+### `points`
+
+::: {.panel-tabset}
+
+#### Original
+```{python}
+#| code-fold: show
+base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad"),
+    y=alt.Y("life_expect", title="Esperanza de vida"),
+    size="pop",
+)
+```
+
+#### Arreglamos la escala del eje X
+Así como arreglamos nuestra escala Y en el gráfico de la arriba y la escala X en el de la derecha, agregamos un `scale = alt.Scale()` a nuestro eje X en `points`.
+
+::: {.callout-tip}
+No necesitamos arreglar el eje Y ya que al final estamos usando `.resolve_scale(y = 'shared'` como puedes ver en la línea 39 del código para nuestro gráfico final)
+:::
+```{python}
+#| code-fold: show
+base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad", scale=alt.Scale(domain=(0, 9))),
+    y=alt.Y("life_expect", title=""),
+    size=alt.Size("pop", title="población",),
+)
+```
+
+::: {.callout-note}
+En este paso aprovechamos para eliminar el título de nuestro eje Y ya que lo vamos a explicar en el título del gráfico final. Además, agregamos un título a nuestra leyenda para la variable "pop".
+:::
+
+#### Hagamos nuestros círculos un poco más grandes
+::: {.callout-note collapse="true"}
+##### ¿Qué son las escalas?
+Las escalas tienen dos componentes principales `domain` y `range`. Una escala puedes imaginarla como una función que toma datos y los códifica a una representación visual. El `domain` define el mínimo y máximo de los datos que la escala espera recibir, el `range` define el mínimo y el máximo de los valores que va a producir. 
+
+Por ejemplo, una escala con `domain` de cero a 1 y `range` de 0 a 100 va a recibir valores como 0.10, 0.25, y 0.89 y retornar 10, 25 y 89. 
+
+En la visualización de datos utilizamos escalas para transformar datos "reales" a valores de componentes visuales como el radio de un círculo o el color de una marca gráfica.
+
+Así como tenemos escalas que transforman datos de 0-1 a 0-100, tenemos escalas que transforman datos de -10°C - 50°C a colores entre 'azul claro' y 'rojo oscuro', por ejemplo. 
+::: 
+Hasta ahora, hemos utilizado `alt.Scale(domain = (0, 9))` para controlar el mínimo y el máximo de los valores que nuestros componentes (X o Y) esperan recibir. También podemos manipular el mínimo y el máximo de los valores que se pueden producir con estas escalas. En este caso vamos a actualizar el `range` de la escala que estamos utilizando para nuestro componente `alt.Size()` - el tamaño de nuestros circulos
+
+```{python}
+#| code-fold: show
+base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad", scale=alt.Scale(domain=(0, 9))),
+    y=alt.Y("life_expect", title=""),
+    size=alt.Size("pop", title="población", scale=alt.Scale(range=(50, 1500))),
+)
+```
+
+::: {.callout-tip}
+Puede que ahora la escala Y no sea de 0 a 90 en todas sus variaciones año con año. Esto es porque todavía no usamos el `.resolve_scale(y = 'shared')`. En el gráfico final las escalas van a estar sincronizadas.
+:::
+:::
+
+## ¡Listo!
+Juntando todo esto (y agregando un título) obtenemos nuestro gráfico final.
+```{python}
+slider = alt.binding_range(min=1955, max=2005, step=5)
+select_year = alt.selection_single(
+    name="year", fields=["year"], bind=slider, init={"year": 1955}
+)
+
+base = (
+    alt.Chart(data)
+    .encode(
+        color=alt.Color("cluster", type="nominal"),
+    )
+    .add_selection(select_year)
+    .transform_filter(select_year)
+)
+
+points = base.mark_circle().encode(
+    x=alt.X("fertility", title="Fertilidad", scale=alt.Scale(domain=(0, 9))),
+    y=alt.Y("life_expect", title=""),
+    size=alt.Size("pop", title="población", scale=alt.Scale(range=(50, 1500))),
+)
+
+top = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("fertility", title="", bin=alt.Bin(extent=(0, 9))),
+        y=alt.Y(
+            "count()",
+            title="",
+            scale=alt.Scale(domain=(0, 30)),
+        ),
+    )
+    .properties(height=60)
+)
+
+right = (
+    base.mark_bar(opacity=0.3)
+    .encode(
+        x=alt.X("count()", title="", scale=alt.Scale(domain=(0, 40))),
+        y=alt.Y("life_expect", title="", bin=alt.Bin(extent=(0, 90))),
+    )
+    .properties(width=60)
+)
+
+abajo = alt.hconcat(points, right).resolve_scale(y="shared")
+final = alt.vconcat(top, abajo)
+
+final.properties(title="Esperanza de vida a través de los años")
+```
