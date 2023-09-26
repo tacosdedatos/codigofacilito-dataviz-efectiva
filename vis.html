@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.14.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-1d29e58cd6de801d5f1b56d61436a992"}, "mark": {"type": "bar"}, "encoding": {"x": {"axis": {"labelAngle": 0}, "field": "year", "title": "", "type": "ordinal"}, "y": {"field": "life_expect", "title": "", "type": "quantitative"}}, "title": "Esperanza de vida en Rep\u00fablica Dominicana", "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v5.14.1.json", "datasets": {"data-1d29e58cd6de801d5f1b56d61436a992": [{"year": 1955, "country": "Dominican Republic", "cluster": 3, "pop": 2737257, "life_expect": 49.828, "fertility": 7.6405}, {"year": 1960, "country": "Dominican Republic", "cluster": 3, "pop": 3231488, "life_expect": 53.459, "fertility": 7.3505}, {"year": 1965, "country": "Dominican Republic", "cluster": 3, "pop": 3805881, "life_expect": 56.751, "fertility": 6.6495}, {"year": 1970, "country": "Dominican Republic", "cluster": 3, "pop": 4422755, "life_expect": 59.631, "fertility": 5.71}, {"year": 1975, "country": "Dominican Republic", "cluster": 3, "pop": 5048499, "life_expect": 61.788, "fertility": 4.76}, {"year": 1980, "country": "Dominican Republic", "cluster": 3, "pop": 5696855, "life_expect": 63.727, "fertility": 4.0}, {"year": 1985, "country": "Dominican Republic", "cluster": 3, "pop": 6377765, "life_expect": 66.046, "fertility": 3.47}, {"year": 1990, "country": "Dominican Republic", "cluster": 3, "pop": 7077651, "life_expect": 68.457, "fertility": 3.1995}, {"year": 1995, "country": "Dominican Republic", "cluster": 3, "pop": 7730224, "life_expect": 69.957, "fertility": 3.05}, {"year": 2000, "country": "Dominican Republic", "cluster": 3, "pop": 8385828, "life_expect": 70.847, "fertility": 2.95}, {"year": 2005, "country": "Dominican Republic", "cluster": 3, "pop": 9049595, "life_expect": 72.235, "fertility": 2.81}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
