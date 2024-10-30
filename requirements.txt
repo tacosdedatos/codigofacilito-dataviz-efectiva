@@ -1,0 +1,3 @@
+altair>=5.4.1
+vega_datasets>=0.9.0
+ipykernel>=6.29.5
