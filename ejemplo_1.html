@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-35ff20734554101de9412929fdedbfa8"}, "mark": {"type": "bar", "opacity": {"expr": "opacidad"}}, "encoding": {"color": {"field": "country", "title": "Pa\u00eds", "type": "nominal"}, "column": {"field": "country", "type": "nominal"}, "x": {"field": "year", "title": "", "type": "ordinal"}, "y": {"axis": {"format": "s"}, "field": "pop", "title": "Poblaci\u00f3n", "type": "quantitative"}}, "params": [{"name": "opacidad", "bind": {"input": "range", "max": 1.0, "min": 0.1, "name": "slider de opacidad", "step": 0.1}, "value": 0.4}], "title": "Poblaci\u00f3n a trav\u00e9s de los a\u00f1os", "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-35ff20734554101de9412929fdedbfa8": [{"year": 1955, "country": "Afghanistan", "cluster": 0, "pop": 8891209, "life_expect": 30.332, "fertility": 7.7}, {"year": 1960, "country": "Afghanistan", "cluster": 0, "pop": 9829450, "life_expect": 31.997, "fertility": 7.7}, {"year": 1965, "country": "Afghanistan", "cluster": 0, "pop": 10997885, "life_expect": 34.02, "fertility": 7.7}, {"year": 1970, "country": "Afghanistan", "cluster": 0, "pop": 12430623, "life_expect": 36.088, "fertility": 7.7}, {"year": 1975, "country": "Afghanistan", "cluster": 0, "pop": 14132019, "life_expect": 38.438, "fertility": 7.7}, {"year": 1980, "country": "Afghanistan", "cluster": 0, "pop": 15112149, "life_expect": 39.854, "fertility": 7.8}, {"year": 1985, "country": "Afghanistan", "cluster": 0, "pop": 13796928, "life_expect": 40.822, "fertility": 7.9}, {"year": 1990, "country": "Afghanistan", "cluster": 0, "pop": 14669339, "life_expect": 41.674, "fertility": 8.0}, {"year": 1995, "country": "Afghanistan", "cluster": 0, "pop": 20881480, "life_expect": 41.763, "fertility": 8.0}, {"year": 2000, "country": "Afghanistan", "cluster": 0, "pop": 23898198, "life_expect": 42.129, "fertility": 7.4792}, {"year": 2005, "country": "Afghanistan", "cluster": 0, "pop": 29928987, "life_expect": 43.828, "fertility": 7.0685}, {"year": 1955, "country": "Argentina", "cluster": 3, "pop": 18927821, "life_expect": 64.399, "fertility": 3.1265}, {"year": 1960, "country": "Argentina", "cluster": 3, "pop": 20616009, "life_expect": 65.142, "fertility": 3.0895}, {"year": 1965, "country": "Argentina", "cluster": 3, "pop": 22283100, "life_expect": 65.634, "fertility": 3.049}, {"year": 1970, "country": "Argentina", "cluster": 3, "pop": 23962313, "life_expect": 67.065, "fertility": 3.1455}, {"year": 1975, "country": "Argentina", "cluster": 3, "pop": 26081880, "life_expect": 68.481, "fertility": 3.44}, {"year": 1980, "country": "Argentina", "cluster": 3, "pop": 28369799, "life_expect": 69.942, "fertility": 3.15}, {"year": 1985, "country": "Argentina", "cluster": 3, "pop": 30675059, "life_expect": 70.774, "fertility": 3.053}, {"year": 1990, "country": "Argentina", "cluster": 3, "pop": 33022202, "life_expect": 71.868, "fertility": 2.9}, {"year": 1995, "country": "Argentina", "cluster": 3, "pop": 35311049, "life_expect": 73.275, "fertility": 2.63}, {"year": 2000, "country": "Argentina", "cluster": 3, "pop": 37497728, "life_expect": 74.34, "fertility": 2.35}, {"year": 2005, "country": "Argentina", "cluster": 3, "pop": 39537943, "life_expect": 75.32, "fertility": 2.254}, {"year": 1955, "country": "Aruba", "cluster": 3, "pop": 53865, "life_expect": 64.381, "fertility": 5.15}, {"year": 1960, "country": "Aruba", "cluster": 3, "pop": 57203, "life_expect": 66.606, "fertility": 4.399}, {"year": 1965, "country": "Aruba", "cluster": 3, "pop": 59020, "life_expect": 68.336, "fertility": 3.301}, {"year": 1970, "country": "Aruba", "cluster": 3, "pop": 59039, "life_expect": 70.941, "fertility": 2.651}, {"year": 1975, "country": "Aruba", "cluster": 3, "pop": 59390, "life_expect": 71.83, "fertility": 2.45}, {"year": 1980, "country": "Aruba", "cluster": 3, "pop": 60266, "life_expect": 74.116, "fertility": 2.358}, {"year": 1985, "country": "Aruba", "cluster": 3, "pop": 64129, "life_expect": 74.494, "fertility": 2.3}, {"year": 1990, "country": "Aruba", "cluster": 3, "pop": 66653, "life_expect": 74.108, "fertility": 2.28}, {"year": 1995, "country": "Aruba", "cluster": 3, "pop": 67836, "life_expect": 73.011, "fertility": 2.208}, {"year": 2000, "country": "Aruba", "cluster": 3, "pop": 69539, "life_expect": 73.451, "fertility": 2.124}, {"year": 2005, "country": "Aruba", "cluster": 3, "pop": 71566, "life_expect": 74.239, "fertility": 2.04}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
